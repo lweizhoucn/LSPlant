@@ -45,7 +45,7 @@ public:
     static bool Init(const HookHandler &handler) {
         auto sdk_int = GetAndroidApiLevel();
 
-        if (sdk_int <= __ANDROID_API_U__) [[likely]] {
+        if (sdk_int >= __ANDROID_API_N__) [[likely]] {
             handler(EnqueueOptimizedCompilation_);
             handler(AddCompileTask_);
         }
