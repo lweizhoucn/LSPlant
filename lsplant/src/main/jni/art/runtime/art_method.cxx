@@ -293,7 +293,14 @@ public:
         } else if (sdk_int >= __ANDROID_API_S__) {
             kAccPreCompiled = 0x00800000;
         }
-        if (sdk_int < __ANDROID_API_Q__) kAccFastInterpreterToInterpreterInvoke = 0;
+        if (sdk_int < __ANDROID_API_Q__) {
+            kAccFastInterpreterToInterpreterInvoke = 0;
+        } else if (sdk_int >= __ANDROID_API_T__) {
+            // In Android 13+, kAccFastInterpreterToInterpreterInvoke (0x40000000) was removed
+            // and its bit was repurposed for kAccMemorySharedMethod. The nterp fast path flag
+            // moved to kAccNterpEntryPointFastPathFlag (0x00100000).
+            kAccFastInterpreterToInterpreterInvoke = 0x00100000;
+        }
 
         if (!handler(GetMethodShortyL_, true, GetMethodShorty_)) {
             LOGE("Failed to find GetMethodShorty");
